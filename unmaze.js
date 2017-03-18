@@ -5,8 +5,9 @@
 
 const MAZE = {
     FREE: 0,
-    WALL: 1
-
+    WALL: 1,
+    START: 2,
+    END: 3
 };
 
 class Maze {
@@ -20,9 +21,6 @@ class Maze {
             this.maze[i] = new Array(height);
         }
         this.allWall();
-
-        this.start = {x: null, y: null};
-        this.end = {x: null, y: null};
         this.robot = {x: null, y: null};
     }
 
@@ -32,6 +30,14 @@ class Maze {
                 this.maze[i][j] = {type: MAZE.WALL};
             }
         }
+    }
+
+    setStart(x, y) {
+        this.maze[x][y].type = MAZE.START;
+    }
+
+    setEnd(x, y) {
+        this.maze[x][y].type = MAZE.END;
     }
 
     robotToStart() {
