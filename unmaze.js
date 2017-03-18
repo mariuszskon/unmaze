@@ -102,4 +102,12 @@ class MazeSolver {
         }
         return possibilities;
     }
+
+    isJunction(possibilities) {
+        if (possibilities.length > 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
