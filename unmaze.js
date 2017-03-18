@@ -110,4 +110,12 @@ class MazeSolver {
             return false;
         }
     }
+
+    isDeadEnd(possibilities) {
+        if (possibilities.length === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
