@@ -54,7 +54,7 @@ class MazeSolver {
         this.maze = maze;
     }
 
-    adjacentCells() {
+    adjacent() {
         let up, right, down, left;
 
         if (this.maze.robot.y === 0) {
@@ -82,5 +82,14 @@ class MazeSolver {
         }
 
         return {up, right, down, left};
+    }
+
+    isSolved(adjacent) {
+        for (let key in adjacent) {
+            if (adjacent[key] === MAZE.END) {
+                return true;
+            }
+        }
+        return false;
     }
 }
