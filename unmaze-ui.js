@@ -3,3 +3,7 @@
    Licensed under the MIT license
 */
 
+let canvas = document.getElementById("unmaze-canvas");
+
+let ctx = canvas.getContext("2d");
+
