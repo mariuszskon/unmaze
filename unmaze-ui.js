@@ -3,7 +3,7 @@
    Licensed under the MIT license
 */
 
-const TILE_SIZE = 10;
+const TILE_SIZE = 20;
 
 const UI_MODE = {
     WATCHING: 0,
