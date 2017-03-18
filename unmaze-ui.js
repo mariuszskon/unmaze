@@ -59,14 +59,19 @@ function render() {
     }
 }
 
-function move_mouse(e) {
+function set_cursor_pos(e) {
     let rect = canvas.getBoundingClientRect();
     cursor_pos.x = Math.floor((e.clientX - rect.left) / TILE_SIZE);
     cursor_pos.y = Math.floor((e.clientY - rect.top) / TILE_SIZE);
+}
+
+function move_mouse(e) {
+    set_cursor_pos(e);
     render();
 }
 
-function toggle_tile() {
+function toggle_tile(e) {
+    set_cursor_pos(e);
     if (ui_maze.maze[cursor_pos.x][cursor_pos.y].type === MAZE.FREE) {
         ui_maze.maze[cursor_pos.x][cursor_pos.y].type = MAZE.WALL;
     } else if (ui_maze.maze[cursor_pos.x][cursor_pos.y].type === MAZE.WALL) {
