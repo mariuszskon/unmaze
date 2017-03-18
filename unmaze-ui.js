@@ -79,6 +79,12 @@ function editing_mode() {
     canvas.addEventListener("click", toggle_tile);
 }
 
+function watching_mode() {
+    ui_mode = UI_MODE.WATCHING;
+    canvas.removeEventListener("mousemove", move_mouse);
+    canvas.removeEventListener("click", toggle_tile);
+}
+
 editing_mode();
 render();
 
