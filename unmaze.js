@@ -49,9 +49,17 @@ class Maze {
     }
 }
 
+const SOLVE_STATUS = {
+    EXPLORING: 0,
+    SOLVED: 1,
+    FAILED: 2,
+    RETRACING: 3
+};
+
 class MazeSolver {
     constructor(maze) {
         this.maze = maze;
+        this.status = SOLVE_STATUS.EXPLORING;
     }
 
     adjacent() {
@@ -117,5 +125,17 @@ class MazeSolver {
         } else {
             return false;
         }
+    }
+
+    ai() {
+        
+    }
+
+    step() {
+        if (this.status !== SOLVE_STATUS.SOLVED && this.status !== SOLVE_STATUS.FAILED) {
+            this.ai();
+        }
+
+        return this.status;
     }
 }
