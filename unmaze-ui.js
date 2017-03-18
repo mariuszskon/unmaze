@@ -73,16 +73,23 @@ function toggle_tile() {
     render();
 }
 
+function no_cursor() {
+    cursor_pos = {x: null, y: null};
+    render();
+}
+
 function editing_mode() {
     ui_mode = UI_MODE.EDITING;
     canvas.addEventListener("mousemove", move_mouse);
     canvas.addEventListener("click", toggle_tile);
+    canvas.addEventListener("mouseout", no_cursor);
 }
 
 function watching_mode() {
     ui_mode = UI_MODE.WATCHING;
     canvas.removeEventListener("mousemove", move_mouse);
     canvas.removeEventListener("click", toggle_tile);
+    canvas.removeEventListener("mouseout", no_cursor);
 }
 
 editing_mode();
