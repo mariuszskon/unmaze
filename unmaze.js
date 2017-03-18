@@ -48,3 +48,39 @@ class Maze {
         this.robot.y = this.start.y;
     }
 }
+
+class MazeSolver {
+    constructor(maze) {
+        this.maze = maze;
+    }
+
+    adjacentCells() {
+        let up, right, down, left;
+
+        if (this.maze.robot.y === 0) {
+            up = MAZE.WALL;
+        } else {
+            up = this.maze.maze[this.maze.robot.x][this.maze.robot.y - 1].type;
+        }
+
+        if (this.maze.robot.x === this.maze.width - 1) {
+            right = MAZE.WALL;
+        } else {
+            right = this.maze.maze[this.maze.robot.x + 1][this.maze.robot.y].type;
+        }
+
+        if (this.maze.robot.y === this.maze.height - 1) {
+            down = MAZE.WALL;
+        } else {
+            down = this.maze.maze[this.maze.robot.x][this.maze.robot.y + 1].type;
+        }
+
+        if (this.maze.robot.x === 0) {
+            left = MAZE.WALL;
+        } else {
+            left = this.maze.maze[this.maze.robot.x - 1][this.maze.robot.y].type;
+        }
+
+        return {up, right, down, left};
+    }
+}
