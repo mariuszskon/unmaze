@@ -92,4 +92,14 @@ class MazeSolver {
         }
         return false;
     }
+
+    possibleNext(adjacent) {
+        let possibilities = [];
+        for (let key in adjacent) {
+            if (adjacent[key] === MAZE.FREE) {
+                possibilities.push(key);
+            }
+        }
+        return possibilities;
+    }
 }
