@@ -7,7 +7,9 @@ const MAZE = {
     FREE: 0,
     WALL: 1,
     START: 2,
-    END: 3
+    END: 3,
+    TRAIL: 4,
+    JUNCTION: 5
 };
 
 class Maze {
