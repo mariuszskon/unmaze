@@ -23,6 +23,7 @@ class Maze {
             this.maze[i] = new Array(height);
         }
         this.allWall();
+        this.start = {x: null, y: null};
         this.robot = {x: null, y: null};
     }
 
@@ -35,6 +36,7 @@ class Maze {
     }
 
     setStart(x, y) {
+        this.start = {x: x, y: y};
         this.maze[x][y].type = MAZE.START;
     }
 
