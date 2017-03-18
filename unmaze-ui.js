@@ -17,6 +17,8 @@ TYPE2COLOR[MAZE.START] = "yellow";
 TYPE2COLOR[MAZE.END] = "green";
 TYPE2COLOR[MAZE.TRAIL] = "orange";
 
+const CURSOR_COLOR = "gray";
+
 const ROBOT_COLOR = "red";
 
 let canvas, ctx, ui_maze, ui_mode;
@@ -48,10 +50,23 @@ function render() {
 
     ctx.fillStyle = ROBOT_COLOR;
     ctx.fillRect(ui_maze.robot.x * TILE_SIZE, ui_maze.robot.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+
+    if (cursor_pos.x !== null && cursor_pos.y !== null) {
+        ctx.strokeStyle = CURSOR_COLOR;
+        ctx.strokeRect(cursor_pos.x * TILE_SIZE, cursor_pos.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+}
+
+function move_mouse(e) {
+    let rect = canvas.getBoundingClientRect();
+    cursor_pos.x = Math.floor((e.clientX - rect.left) / TILE_SIZE);
+    cursor_pos.y = Math.floor((e.clientY - rect.top) / TILE_SIZE);
+    render();
 }
 
 function editing_mode() {
     ui_mode = UI_MODE.EDITING;
+    canvas.addEventListener("mousemove", move_mouse);
 }
 
 editing_mode();
