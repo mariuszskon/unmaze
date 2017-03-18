@@ -3,7 +3,57 @@
    Licensed under the MIT license
 */
 
-let canvas = document.getElementById("unmaze-canvas");
+const TILE_SIZE = 10;
 
-let ctx = canvas.getContext("2d");
+const UI_MODE = {
+    WATCHING: 0,
+    EDITING: 1
+};
+
+const TYPE2COLOR = {};
+TYPE2COLOR[MAZE.FREE] = "white";
+TYPE2COLOR[MAZE.WALL] = "black";
+TYPE2COLOR[MAZE.START] = "yellow";
+TYPE2COLOR[MAZE.END] = "green";
+TYPE2COLOR[MAZE.TRAIL] = "orange";
+
+const ROBOT_COLOR = "red";
+
+let canvas, ctx, ui_maze, ui_mode;
+
+let cursor_pos = {x: null, y: null};
+
+canvas = document.getElementById("unmaze-canvas");
+
+ctx = canvas.getContext("2d");
+
+const MAZE_WIDTH = canvas.width / TILE_SIZE;
+
+const MAZE_HEIGHT = canvas.height / TILE_SIZE;
+
+ui_maze = new Maze(MAZE_WIDTH, MAZE_HEIGHT);
+
+ui_maze.setStart(0, 0);
+ui_maze.setEnd(MAZE_WIDTH - 1, MAZE_HEIGHT - 1);
+ui_maze.robotToStart();
+
+function render() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < MAZE_WIDTH; i++) {
+        for (let j = 0; j < MAZE_HEIGHT; j++) {
+            ctx.fillStyle = TYPE2COLOR[ui_maze.maze[i][j].type];
+            ctx.fillRect(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        }
+    }
+
+    ctx.fillStyle = ROBOT_COLOR;
+    ctx.fillRect(ui_maze.robot.x * TILE_SIZE, ui_maze.robot.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+}
+
+function editing_mode() {
+    ui_mode = UI_MODE.EDITING;
+}
+
+editing_mode();
+render();
 
