@@ -64,9 +64,19 @@ function move_mouse(e) {
     render();
 }
 
+function toggle_tile() {
+    if (ui_maze.maze[cursor_pos.x][cursor_pos.y].type === MAZE.FREE) {
+        ui_maze.maze[cursor_pos.x][cursor_pos.y].type = MAZE.WALL;
+    } else if (ui_maze.maze[cursor_pos.x][cursor_pos.y].type === MAZE.WALL) {
+        ui_maze.maze[cursor_pos.x][cursor_pos.y].type = MAZE.FREE;
+    }
+    render();
+}
+
 function editing_mode() {
     ui_mode = UI_MODE.EDITING;
     canvas.addEventListener("mousemove", move_mouse);
+    canvas.addEventListener("click", toggle_tile);
 }
 
 editing_mode();
