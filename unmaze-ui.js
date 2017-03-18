@@ -33,11 +33,13 @@ const MAZE_WIDTH = canvas.width / TILE_SIZE;
 
 const MAZE_HEIGHT = canvas.height / TILE_SIZE;
 
-ui_maze = new Maze(MAZE_WIDTH, MAZE_HEIGHT);
+function maze_setup() {
+    ui_maze = new Maze(MAZE_WIDTH, MAZE_HEIGHT);
 
-ui_maze.setStart(0, 0);
-ui_maze.setEnd(MAZE_WIDTH - 1, MAZE_HEIGHT - 1);
-ui_maze.robotToStart();
+    ui_maze.setStart(0, 0);
+    ui_maze.setEnd(MAZE_WIDTH - 1, MAZE_HEIGHT - 1);
+    ui_maze.robotToStart();
+}
 
 function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -92,6 +94,14 @@ function watching_mode() {
     canvas.removeEventListener("mouseout", no_cursor);
 }
 
+function full_reset() {
+    maze_setup();
+    render();
+}
+
+document.getElementById("reset-button").addEventListener("click", full_reset);
+
+maze_setup();
 editing_mode();
 render();
 
