@@ -29,9 +29,9 @@ canvas = document.getElementById("unmaze-canvas");
 ctx = canvas.getContext("2d");
 
 let step_button = document.getElementById("step-button");
-let reset_button = document.getElementById("reset-button");
+let full_reset_button = document.getElementById("full-reset-button");
 
-let editing_buttons = [step_button, reset_button];
+let editing_buttons = [step_button, full_reset_button];
 
 const MAZE_WIDTH = canvas.width / TILE_SIZE;
 
@@ -121,7 +121,7 @@ function ui_step() {
     render();
 }
 
-reset_button.addEventListener("click", full_reset);
+full_reset_button.addEventListener("click", full_reset);
 step_button.addEventListener("click", ui_step);
 
 maze_setup();
