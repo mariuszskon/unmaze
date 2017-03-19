@@ -58,6 +58,7 @@ class MazeSolver {
     constructor(maze) {
         this.maze = maze;
         this.status = SOLVE_STATUS.EXPLORING;
+        this.junction_memory = [];
     }
 
     adjacent() {
@@ -140,9 +141,15 @@ class MazeSolver {
         let possibilities = this.possibleNext(adjacent);
 
         if (this.isJunction(possibilities)) {
-            // TODO: implement
+            // new junction!
+            let direction = possibilities[0];
+            this.junction_memory.push([direction]);
+            // set down trail to avoid considering this a new junction if there is a loop
+            this.maze.maze[this.maze.robot.x][this.maze.robot.y].type = MAZE.TRAIL;
+            this.move(direction);
         } else if (this.isDeadEnd(possibilities)) {
             // TODO: implement
+            this.status = SOLVE_STATUS.FAILED;
         } else {
             // move to the next available space
             // but first, set down a trail tile (BEFORE moving)
