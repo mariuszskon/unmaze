@@ -118,6 +118,7 @@ function watching_mode() {
 }
 
 const SOLVE_STATUS2TEXT = {};
+SOLVE_STATUS2TEXT[null] = "None";
 SOLVE_STATUS2TEXT[SOLVE_STATUS.EXPLORING] = "Exploring...";
 SOLVE_STATUS2TEXT[SOLVE_STATUS.SOLVED] = "Solved!";
 SOLVE_STATUS2TEXT[SOLVE_STATUS.FAILED] = "No solution!";
@@ -133,11 +134,13 @@ function ui_status_update(status) {
 }
 
 function full_reset() {
+    ui_status_update(null);
     maze_setup();
     render();
 }
 
 function robot_reset() {
+    ui_status_update(null);
     ui_maze.resetRobot();
     solver_setup(); // clear any solution/junction memory
     render();
