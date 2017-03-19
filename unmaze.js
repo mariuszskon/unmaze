@@ -127,8 +127,36 @@ class MazeSolver {
         }
     }
 
+    explore(adjacent) {
+        let possibilities = this.possibleNext();
+
+        if (this.isJunction(possibilities)) {
+            // TODO: implement
+        } else if (this.isDeadEnd(possibilities)) {
+            // TODO: implement
+        } else {
+            // move to the next available space
+            // TODO: implement
+        }
+    }
+
+    retrace(adjacent) {
+        // TODO: implement
+    }
+
     ai() {
-        
+        let adjacent = this.adjacent();
+
+        if (this.isSolved()) {
+            this.status = SOLVE_STATUS.SOLVED;
+            return;
+        }
+
+        if (this.status === SOLVE_STATUS.EXPLORING) {
+            this.explore(adjacent);
+        } else if (this.status === SOLVE_STATUS.RETRACING) {
+            this.retrace(adjacent);
+        }
     }
 
     step() {
