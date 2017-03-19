@@ -45,6 +45,17 @@ class Maze {
         this.robot.x = this.start.x;
         this.robot.y = this.start.y;
     }
+
+    resetRobot() {
+        this.robotToStart();
+        for (let i = 0; i < this.width; i++) {
+            for (let j= 0; j < this.height; j++) {
+                if (this.maze[i][j].type === MAZE.TRAIL) {
+                    this.maze[i][j].type = MAZE.FREE;
+                }
+            }
+        }
+    }
 }
 
 const SOLVE_STATUS = {
