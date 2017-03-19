@@ -137,9 +137,7 @@ class MazeSolver {
         }
     }
 
-    explore(adjacent) {
-        let possibilities = this.possibleNext(adjacent);
-
+    explore(possibilities) {
         if (this.isJunction(possibilities)) {
             // new junction!
             let direction = possibilities[0];
@@ -149,7 +147,7 @@ class MazeSolver {
             this.move(direction);
         } else if (this.isDeadEnd(possibilities)) {
             // TODO: implement
-            this.status = SOLVE_STATUS.FAILED;
+            this.status = SOLVE_STATUS.RETRACING;
         } else {
             // move to the next available space
             // but first, set down a trail tile (BEFORE moving)
@@ -158,12 +156,26 @@ class MazeSolver {
         }
     }
 
-    retrace(adjacent) {
-        // TODO: implement
+    retrace(adjacent, possibilities) {
+        if (this.isJunction(possibilities)) {
+            // TODO: choose a direction we have not been in before, or continue retracing if there is none
+            this.status = SOLVE_STATUS.FAILED;
+        } else {
+            let direction = null;
+            for (let key in adjacent) {
+                if (adjacent[key] === MAZE.TRAIL) {
+                    direction = key;
+                }
+            }
+            this.move(direction);
+            // remove trail
+            this.maze.maze[this.maze.robot.x][this.maze.robot.y].type = MAZE.FREE;
+        }
     }
 
     ai() {
         let adjacent = this.adjacent();
+        let possibilities = this.possibleNext(adjacent);
 
         if (this.isSolved()) {
             this.status = SOLVE_STATUS.SOLVED;
@@ -171,9 +183,9 @@ class MazeSolver {
         }
 
         if (this.status === SOLVE_STATUS.EXPLORING) {
-            this.explore(adjacent);
+            this.explore(possibilities);
         } else if (this.status === SOLVE_STATUS.RETRACING) {
-            this.retrace(adjacent);
+            this.retrace(adjacent, possibilities);
         }
     }
 
