@@ -29,11 +29,12 @@ let canvas = document.getElementById("unmaze-canvas");
 let ctx = canvas.getContext("2d");
 
 let status_span = document.getElementById("status-span");
+let solve_animate_button = document.getElementById("solve-animate");
 let step_button = document.getElementById("step-button");
 let robot_reset_button = document.getElementById("robot-reset-button");
 let full_reset_button = document.getElementById("full-reset-button");
 
-let editing_buttons = [step_button, robot_reset_button, full_reset_button];
+let buttons = [solve_animate_button, step_button, robot_reset_button, full_reset_button];
 
 const MAZE_WIDTH = canvas.width / TILE_SIZE;
 
@@ -99,8 +100,8 @@ function no_cursor() {
 
 function editing_mode() {
     ui_mode = UI_MODE.EDITING;
-    for (let i = 0; i < editing_buttons.length; i++) {
-        editing_buttons[i].disabled = false;
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = false;
     }
     canvas.addEventListener("mousemove", move_mouse);
     canvas.addEventListener("click", toggle_tile);
@@ -109,8 +110,8 @@ function editing_mode() {
 
 function watching_mode() {
     ui_mode = UI_MODE.WATCHING;
-    for (let i = 0; i < editing_buttons.length; i++) {
-        editing_buttons[i].disabled = true;
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
     }
     canvas.removeEventListener("mousemove", move_mouse);
     canvas.removeEventListener("click", toggle_tile);
@@ -152,9 +153,24 @@ function ui_step() {
     ui_status_update(ui_maze_solver.status);
 }
 
+function solve_animate_continue() {
+    if (!ui_maze_solver.done()) {
+        ui_step();
+        setTimeout(solve_animate_continue, 100);
+    } else {
+        editing_mode();
+    }
+}
+
+function solve_animate() {
+    watching_mode();
+    solve_animate_continue();
+}
+
 full_reset_button.addEventListener("click", full_reset);
 robot_reset_button.addEventListener("click", robot_reset);
 step_button.addEventListener("click", ui_step);
+solve_animate_button.addEventListener("click", solve_animate);
 
 maze_setup();
 editing_mode();
