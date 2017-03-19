@@ -92,19 +92,18 @@ class MazeSolver {
         return {up, right, down, left};
     }
 
-    isSolved(adjacent) {
-        for (let key in adjacent) {
-            if (adjacent[key] === MAZE.END) {
-                return true;
-            }
+    isSolved() {
+        if (this.maze.maze[this.maze.robot.x][this.maze.robot.y].type === MAZE.END) {
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     possibleNext(adjacent) {
         let possibilities = [];
         for (let key in adjacent) {
-            if (adjacent[key] === MAZE.FREE) {
+            if (adjacent[key] === MAZE.FREE || adjacent[key] === MAZE.END) {
                 possibilities.push(key);
             }
         }
@@ -161,7 +160,7 @@ class MazeSolver {
     ai() {
         let adjacent = this.adjacent();
 
-        if (this.isSolved(adjacent)) {
+        if (this.isSolved()) {
             this.status = SOLVE_STATUS.SOLVED;
             return;
         }
