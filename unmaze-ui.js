@@ -28,6 +28,7 @@ let canvas = document.getElementById("unmaze-canvas");
 
 let ctx = canvas.getContext("2d");
 
+let status_span = document.getElementById("status-span");
 let step_button = document.getElementById("step-button");
 let robot_reset_button = document.getElementById("robot-reset-button");
 let full_reset_button = document.getElementById("full-reset-button");
@@ -116,6 +117,21 @@ function watching_mode() {
     canvas.removeEventListener("mouseout", no_cursor);
 }
 
+const SOLVE_STATUS2TEXT = {};
+SOLVE_STATUS2TEXT[SOLVE_STATUS.EXPLORING] = "Exploring...";
+SOLVE_STATUS2TEXT[SOLVE_STATUS.SOLVED] = "Solved!";
+SOLVE_STATUS2TEXT[SOLVE_STATUS.FAILED] = "No solution!";
+SOLVE_STATUS2TEXT[SOLVE_STATUS.RETRACING] = "Retracing...";
+
+let last_status = null;
+
+function ui_status_update(status) {
+    if (status !== last_status) {
+        status_span.innerHTML = SOLVE_STATUS2TEXT[status];
+        last_status = status;
+    }
+}
+
 function full_reset() {
     maze_setup();
     render();
@@ -130,6 +146,7 @@ function robot_reset() {
 function ui_step() {
     ui_maze_solver.step();
     render();
+    ui_status_update(ui_maze_solver.status);
 }
 
 full_reset_button.addEventListener("click", full_reset);
