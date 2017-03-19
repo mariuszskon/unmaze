@@ -227,8 +227,16 @@ class MazeSolver {
         }
     }
 
+    done() {
+        if (this.status === SOLVE_STATUS.SOLVED || this.status === SOLVE_STATUS.FAILED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     step() {
-        if (this.status !== SOLVE_STATUS.SOLVED && this.status !== SOLVE_STATUS.FAILED) {
+        if (!this.done()) {
             this.ai();
         }
 
