@@ -156,9 +156,9 @@ class MazeSolver {
         }
     }
 
-    retrace(adjacent, possibilities) {
-        if (this.isJunction(possibilities)) {
-            // TODO: choose a direction we have not been in before, or continue retracing if there is none
+    goBack(adjacent) {
+        if (this.junction_memory.length === 0) {
+            // there is no junction to go back to, therefore there are no solutions
             this.status = SOLVE_STATUS.FAILED;
         } else {
             let direction = null;
@@ -173,6 +173,41 @@ class MazeSolver {
         }
     }
 
+    retrace(adjacent, possibilities) {
+        console.log("retracing");
+        if (this.isJunction(possibilities)) {
+            console.log("retrace junction handling");
+            // TODO: choose a direction we have not been in before, or continue retracing if there is none
+            let junction_paths = this.junction_memory.pop();
+            console.log("junction paths:");
+            console.log(junction_paths);
+            let direction = null;
+            for (let possibility of possibilities) {
+                // possibility that we have not been to before
+                if (junction_paths.indexOf(possibility) === -1) {
+                    direction = possibility;
+                    break;
+                }
+            }
+            console.log(`direction ${direction}`);
+            if (direction === null) {
+                // we have been everywhere possible from this junction
+                this.goBack(adjacent);
+            } else {
+                junction_paths.push(direction);
+                this.junction_memory.push(junction_paths);
+                console.log("new junction memory:");
+                console.log(this.junction_memory);
+                this.maze.maze[this.maze.robot.x][this.maze.robot.y].type = MAZE.TRAIL;
+                this.status = SOLVE_STATUS.EXPLORING;
+                this.move(direction);
+            }
+        } else {
+            console.log("retrace non-junction");
+            this.goBack(adjacent);
+        }
+    }
+
     ai() {
         let adjacent = this.adjacent();
         let possibilities = this.possibleNext(adjacent);
@@ -182,6 +217,7 @@ class MazeSolver {
             return;
         }
 
+        console.log(`STATUS: ${this.status}`);
         if (this.status === SOLVE_STATUS.EXPLORING) {
             this.explore(possibilities);
         } else if (this.status === SOLVE_STATUS.RETRACING) {
