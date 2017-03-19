@@ -29,9 +29,10 @@ let canvas = document.getElementById("unmaze-canvas");
 let ctx = canvas.getContext("2d");
 
 let step_button = document.getElementById("step-button");
+let robot_reset_button = document.getElementById("robot-reset-button");
 let full_reset_button = document.getElementById("full-reset-button");
 
-let editing_buttons = [step_button, full_reset_button];
+let editing_buttons = [step_button, robot_reset_button, full_reset_button];
 
 const MAZE_WIDTH = canvas.width / TILE_SIZE;
 
@@ -120,12 +121,19 @@ function full_reset() {
     render();
 }
 
+function robot_reset() {
+    ui_maze.resetRobot();
+    solver_setup(); // clear any solution/junction memory
+    render();
+}
+
 function ui_step() {
     ui_maze_solver.step();
     render();
 }
 
 full_reset_button.addEventListener("click", full_reset);
+robot_reset_button.addEventListener("click", robot_reset);
 step_button.addEventListener("click", ui_step);
 
 maze_setup();
