@@ -20,7 +20,7 @@ const CURSOR_COLOR = "gray";
 
 const ROBOT_COLOR = "red";
 
-let canvas, ctx, ui_maze, ui_mode;
+let canvas, ctx, ui_maze, ui_mode, ui_maze_solver;
 
 let cursor_pos = {x: null, y: null};
 
@@ -43,6 +43,8 @@ function maze_setup() {
     ui_maze.setStart(0, 0);
     ui_maze.setEnd(MAZE_WIDTH - 1, MAZE_HEIGHT - 1);
     ui_maze.robotToStart();
+
+    ui_maze_solver = new MazeSolver(ui_maze);
 }
 
 function render() {
@@ -114,7 +116,13 @@ function full_reset() {
     render();
 }
 
+function ui_step() {
+    ui_maze_solver.step();
+    render();
+}
+
 reset_button.addEventListener("click", full_reset);
+step_button.addEventListener("click", ui_step);
 
 maze_setup();
 editing_mode();
