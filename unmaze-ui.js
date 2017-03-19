@@ -20,13 +20,13 @@ const CURSOR_COLOR = "gray";
 
 const ROBOT_COLOR = "red";
 
-let canvas, ctx, ui_maze, ui_mode, ui_maze_solver;
+let ui_maze, ui_mode, ui_maze_solver;
 
 let cursor_pos = {x: null, y: null};
 
-canvas = document.getElementById("unmaze-canvas");
+let canvas = document.getElementById("unmaze-canvas");
 
-ctx = canvas.getContext("2d");
+let ctx = canvas.getContext("2d");
 
 let step_button = document.getElementById("step-button");
 let full_reset_button = document.getElementById("full-reset-button");
@@ -37,6 +37,10 @@ const MAZE_WIDTH = canvas.width / TILE_SIZE;
 
 const MAZE_HEIGHT = canvas.height / TILE_SIZE;
 
+function solver_setup() {
+    ui_maze_solver = new MazeSolver(ui_maze);
+}
+
 function maze_setup() {
     ui_maze = new Maze(MAZE_WIDTH, MAZE_HEIGHT);
 
@@ -44,7 +48,7 @@ function maze_setup() {
     ui_maze.setEnd(MAZE_WIDTH - 1, MAZE_HEIGHT - 1);
     ui_maze.robotToStart();
 
-    ui_maze_solver = new MazeSolver(ui_maze);
+    solver_setup();
 }
 
 function render() {
