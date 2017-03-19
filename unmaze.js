@@ -6,9 +6,8 @@
 const MAZE = {
     FREE: 0,
     WALL: 1,
-    START: 2,
-    END: 3,
-    TRAIL: 4
+    END: 2,
+    TRAIL: 3
 };
 
 class Maze {
@@ -36,7 +35,6 @@ class Maze {
 
     setStart(x, y) {
         this.start = {x: x, y: y};
-        this.maze[x][y].type = MAZE.START;
     }
 
     setEnd(x, y) {

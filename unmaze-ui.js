@@ -13,7 +13,6 @@ const UI_MODE = {
 const TYPE2COLOR = {};
 TYPE2COLOR[MAZE.FREE] = "white";
 TYPE2COLOR[MAZE.WALL] = "black";
-TYPE2COLOR[MAZE.START] = "yellow";
 TYPE2COLOR[MAZE.END] = "green";
 TYPE2COLOR[MAZE.TRAIL] = "orange";
 
