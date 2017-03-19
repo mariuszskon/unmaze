@@ -28,6 +28,11 @@ canvas = document.getElementById("unmaze-canvas");
 
 ctx = canvas.getContext("2d");
 
+let step_button = document.getElementById("step-button");
+let reset_button = document.getElementById("reset-button");
+
+let editing_buttons = [step_button, reset_button];
+
 const MAZE_WIDTH = canvas.width / TILE_SIZE;
 
 const MAZE_HEIGHT = canvas.height / TILE_SIZE;
@@ -86,6 +91,9 @@ function no_cursor() {
 
 function editing_mode() {
     ui_mode = UI_MODE.EDITING;
+    for (let i = 0; i < editing_buttons.length; i++) {
+        editing_buttons[i].disabled = false;
+    }
     canvas.addEventListener("mousemove", move_mouse);
     canvas.addEventListener("click", toggle_tile);
     canvas.addEventListener("mouseout", no_cursor);
@@ -93,6 +101,9 @@ function editing_mode() {
 
 function watching_mode() {
     ui_mode = UI_MODE.WATCHING;
+    for (let i = 0; i < editing_buttons.length; i++) {
+        editing_buttons[i].disabled = true;
+    }
     canvas.removeEventListener("mousemove", move_mouse);
     canvas.removeEventListener("click", toggle_tile);
     canvas.removeEventListener("mouseout", no_cursor);
@@ -103,7 +114,7 @@ function full_reset() {
     render();
 }
 
-document.getElementById("reset-button").addEventListener("click", full_reset);
+reset_button.addEventListener("click", full_reset);
 
 maze_setup();
 editing_mode();
