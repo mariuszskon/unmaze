@@ -127,8 +127,20 @@ class MazeSolver {
         }
     }
 
+    move(direction) {
+        if (direction === "up") {
+            this.maze.robot.y -= 1;
+        } else if (direction === "right") {
+            this.maze.robot.x += 1;
+        } else if (direction === "down") {
+            this.maze.robot.y += 1;
+        } else if (direction === "left") {
+            this.maze.robot.x -= 1;
+        }
+    }
+
     explore(adjacent) {
-        let possibilities = this.possibleNext();
+        let possibilities = this.possibleNext(adjacent);
 
         if (this.isJunction(possibilities)) {
             // TODO: implement
@@ -136,7 +148,9 @@ class MazeSolver {
             // TODO: implement
         } else {
             // move to the next available space
-            // TODO: implement
+            // but first, set down a trail tile (BEFORE moving)
+            this.maze.maze[this.maze.robot.x][this.maze.robot.y].type = MAZE.TRAIL;
+            this.move(possibilities[0]);
         }
     }
 
@@ -147,7 +161,7 @@ class MazeSolver {
     ai() {
         let adjacent = this.adjacent();
 
-        if (this.isSolved()) {
+        if (this.isSolved(adjacent)) {
             this.status = SOLVE_STATUS.SOLVED;
             return;
         }
