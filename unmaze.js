@@ -70,6 +70,7 @@ class MazeSolver {
         this.maze = maze;
         this.status = SOLVE_STATUS.EXPLORING;
         this.junction_memory = [];
+        this.last_pos = {};
     }
 
     adjacent() {
@@ -137,6 +138,7 @@ class MazeSolver {
     }
 
     move(direction) {
+        this.last_pos = {x: this.maze.robot.x, y: this.maze.robot.y};
         if (direction === "up") {
             this.maze.robot.y -= 1;
         } else if (direction === "right") {
@@ -157,7 +159,11 @@ class MazeSolver {
             this.maze.maze[this.maze.robot.x][this.maze.robot.y].type = MAZE.TRAIL;
             this.move(direction);
         } else if (this.isDeadEnd(possibilities)) {
-            // TODO: implement
+            // move back to last position and THEN retrace: handles loops correctly
+            this.maze.robot.x = this.last_pos.x;
+            this.maze.robot.y = this.last_pos.y;
+            // remove trail
+            this.maze.maze[this.maze.robot.x][this.maze.robot.y].type = MAZE.FREE;
             this.status = SOLVE_STATUS.RETRACING;
         } else {
             // move to the next available space
