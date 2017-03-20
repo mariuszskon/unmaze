@@ -186,7 +186,7 @@ class MazeSolver {
 
     retrace(adjacent, possibilities) {
         if (this.isJunction(possibilities)) {
-            // TODO: choose a direction we have not been in before, or continue retracing if there is none
+            // choose a direction we have not been in before, or continue retracing if there is none
             let junction_paths = this.junction_memory.pop();
             let direction = null;
             for (let possibility of possibilities) {
