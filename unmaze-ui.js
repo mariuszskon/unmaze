@@ -30,11 +30,12 @@ let ctx = canvas.getContext("2d");
 
 let status_span = document.getElementById("status-span");
 let solve_animate_button = document.getElementById("solve-animate");
+let quick_solve_button = document.getElementById("quick-solve");
 let step_button = document.getElementById("step-button");
 let robot_reset_button = document.getElementById("robot-reset-button");
 let full_reset_button = document.getElementById("full-reset-button");
 
-let buttons = [solve_animate_button, step_button, robot_reset_button, full_reset_button];
+let buttons = [solve_animate_button, quick_solve_button, step_button, robot_reset_button, full_reset_button];
 
 const MAZE_WIDTH = canvas.width / TILE_SIZE;
 
@@ -167,10 +168,21 @@ function solve_animate() {
     solve_animate_continue();
 }
 
+function quick_solve() {
+    watching_mode(); // just in case
+    while (!ui_maze_solver.done()) {
+        ui_maze_solver.step();
+    }
+    ui_status_update(ui_maze_solver.status);
+    render();
+    editing_mode();
+}
+
 full_reset_button.addEventListener("click", full_reset);
 robot_reset_button.addEventListener("click", robot_reset);
 step_button.addEventListener("click", ui_step);
 solve_animate_button.addEventListener("click", solve_animate);
+quick_solve_button.addEventListener("click", quick_solve);
 
 maze_setup();
 editing_mode();
