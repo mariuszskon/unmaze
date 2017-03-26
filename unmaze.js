@@ -56,6 +56,22 @@ class Maze {
             }
         }
     }
+
+    save() {
+        return btoa(JSON.stringify({
+            maze: this.maze,
+            start: this.start
+        }));
+    }
+
+    load(savedata) {
+        let loaddata = JSON.parse(atob(savedata));
+        this.maze = loaddata.maze;
+        this.start = loaddata.start;
+        this.robotToStart();
+        this.width = this.maze.length;
+        this.height = this.maze[0].length;
+    }
 }
 
 const SOLVE_STATUS = {
