@@ -59,7 +59,7 @@ function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < MAZE_WIDTH; i++) {
         for (let j = 0; j < MAZE_HEIGHT; j++) {
-            ctx.fillStyle = TYPE2COLOR[ui_maze.maze[i][j].type];
+            ctx.fillStyle = TYPE2COLOR[ui_maze.maze[i][j]];
             ctx.fillRect(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         }
     }
@@ -86,10 +86,10 @@ function move_mouse(e) {
 
 function toggle_tile(e) {
     set_cursor_pos(e);
-    if (ui_maze.maze[cursor_pos.x][cursor_pos.y].type === MAZE.FREE) {
-        ui_maze.maze[cursor_pos.x][cursor_pos.y].type = MAZE.WALL;
-    } else if (ui_maze.maze[cursor_pos.x][cursor_pos.y].type === MAZE.WALL) {
-        ui_maze.maze[cursor_pos.x][cursor_pos.y].type = MAZE.FREE;
+    if (ui_maze.maze[cursor_pos.x][cursor_pos.y] === MAZE.FREE) {
+        ui_maze.maze[cursor_pos.x][cursor_pos.y] = MAZE.WALL;
+    } else if (ui_maze.maze[cursor_pos.x][cursor_pos.y] === MAZE.WALL) {
+        ui_maze.maze[cursor_pos.x][cursor_pos.y] = MAZE.FREE;
     }
     render();
 }

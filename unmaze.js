@@ -31,7 +31,7 @@ class Maze {
     allWall() {
         for (let i = 0; i < this.width; i++) {
             for (let j = 0; j < this.height; j++) {
-                this.maze[i][j] = {type: MAZE.WALL};
+                this.maze[i][j] = MAZE.WALL;
             }
         }
     }
@@ -41,7 +41,7 @@ class Maze {
     }
 
     setEnd(x, y) {
-        this.maze[x][y].type = MAZE.END;
+        this.maze[x][y] = MAZE.END;
     }
 
     robotToStart() {
@@ -53,8 +53,8 @@ class Maze {
         this.robotToStart();
         for (let i = 0; i < this.width; i++) {
             for (let j= 0; j < this.height; j++) {
-                if (this.maze[i][j].type === MAZE.TRAIL) {
-                    this.maze[i][j].type = MAZE.FREE;
+                if (this.maze[i][j] === MAZE.TRAIL) {
+                    this.maze[i][j] = MAZE.FREE;
                 }
             }
         }
@@ -98,32 +98,32 @@ class MazeSolver {
         if (this.maze.robot.y === 0) {
             up = MAZE.WALL;
         } else {
-            up = this.maze.maze[this.maze.robot.x][this.maze.robot.y - 1].type;
+            up = this.maze.maze[this.maze.robot.x][this.maze.robot.y - 1];
         }
 
         if (this.maze.robot.x === this.maze.width - 1) {
             right = MAZE.WALL;
         } else {
-            right = this.maze.maze[this.maze.robot.x + 1][this.maze.robot.y].type;
+            right = this.maze.maze[this.maze.robot.x + 1][this.maze.robot.y];
         }
 
         if (this.maze.robot.y === this.maze.height - 1) {
             down = MAZE.WALL;
         } else {
-            down = this.maze.maze[this.maze.robot.x][this.maze.robot.y + 1].type;
+            down = this.maze.maze[this.maze.robot.x][this.maze.robot.y + 1];
         }
 
         if (this.maze.robot.x === 0) {
             left = MAZE.WALL;
         } else {
-            left = this.maze.maze[this.maze.robot.x - 1][this.maze.robot.y].type;
+            left = this.maze.maze[this.maze.robot.x - 1][this.maze.robot.y];
         }
 
         return {up, right, down, left};
     }
 
     isSolved() {
-        if (this.maze.maze[this.maze.robot.x][this.maze.robot.y].type === MAZE.END) {
+        if (this.maze.maze[this.maze.robot.x][this.maze.robot.y] === MAZE.END) {
             return true;
         } else {
             return false;
@@ -175,19 +175,19 @@ class MazeSolver {
             let direction = possibilities[0];
             this.junction_memory.push([direction]);
             // set down trail to avoid considering this a new junction if there is a loop
-            this.maze.maze[this.maze.robot.x][this.maze.robot.y].type = MAZE.TRAIL;
+            this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.TRAIL;
             this.move(direction);
         } else if (this.isDeadEnd(possibilities)) {
             // move back to last position and THEN retrace: handles loops correctly
             this.maze.robot.x = this.last_pos.x;
             this.maze.robot.y = this.last_pos.y;
             // remove trail
-            this.maze.maze[this.maze.robot.x][this.maze.robot.y].type = MAZE.FREE;
+            this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.FREE;
             this.status = SOLVE_STATUS.RETRACING;
         } else {
             // move to the next available space
             // but first, set down a trail tile (BEFORE moving)
-            this.maze.maze[this.maze.robot.x][this.maze.robot.y].type = MAZE.TRAIL;
+            this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.TRAIL;
             this.move(possibilities[0]);
         }
     }
@@ -205,7 +205,7 @@ class MazeSolver {
             }
             this.move(direction);
             // remove trail
-            this.maze.maze[this.maze.robot.x][this.maze.robot.y].type = MAZE.FREE;
+            this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.FREE;
         }
     }
 
@@ -227,7 +227,7 @@ class MazeSolver {
             } else {
                 junction_paths.push(direction);
                 this.junction_memory.push(junction_paths);
-                this.maze.maze[this.maze.robot.x][this.maze.robot.y].type = MAZE.TRAIL;
+                this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.TRAIL;
                 this.status = SOLVE_STATUS.EXPLORING;
                 this.move(direction);
             }
