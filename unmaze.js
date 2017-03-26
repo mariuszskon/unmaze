@@ -12,6 +12,9 @@ const MAZE = {
 
 class Maze {
     constructor(width, height) {
+        if (width < 2 || height < 2) {
+            throw new RangeError("Dimensions too small");
+        }
         this.width = width;
         this.height = height;
 
