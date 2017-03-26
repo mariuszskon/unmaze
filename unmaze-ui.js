@@ -33,9 +33,11 @@ let solve_animate_button = document.getElementById("solve-animate");
 let quick_solve_button = document.getElementById("quick-solve");
 let step_button = document.getElementById("step-button");
 let robot_reset_button = document.getElementById("robot-reset-button");
+let save_button = document.getElementById("save-button");
+let load_button = document.getElementById("load-button");
 let full_reset_button = document.getElementById("full-reset-button");
 
-let buttons = [solve_animate_button, quick_solve_button, step_button, robot_reset_button, full_reset_button];
+let buttons = [solve_animate_button, quick_solve_button, step_button, robot_reset_button, save_button, load_button, full_reset_button];
 
 const MAZE_WIDTH = canvas.width / TILE_SIZE;
 
@@ -178,11 +180,24 @@ function quick_solve() {
     editing_mode();
 }
 
+function save_to_url() {
+    robot_reset();
+    window.location.hash = "#" + ui_maze.save();
+}
+
+function load_from_url() {
+    robot_reset();
+    ui_maze.load(window.location.hash.slice(1));
+    render();
+}
+
 full_reset_button.addEventListener("click", full_reset);
 robot_reset_button.addEventListener("click", robot_reset);
 step_button.addEventListener("click", ui_step);
 solve_animate_button.addEventListener("click", solve_animate);
 quick_solve_button.addEventListener("click", quick_solve);
+save_button.addEventListener("click", save_to_url);
+load_button.addEventListener("click", load_from_url);
 
 maze_setup();
 editing_mode();
