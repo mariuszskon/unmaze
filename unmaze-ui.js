@@ -23,6 +23,7 @@ const ROBOT_COLOR = "red";
 let ui_maze, ui_mode, ui_maze_solver;
 
 let cursor_pos = {x: null, y: null};
+let last_cursor_pos = {x: null, y: null};
 
 let canvas = document.getElementById("unmaze-canvas");
 
@@ -76,14 +77,22 @@ function render() {
 }
 
 function set_cursor_pos(e) {
+    last_cursor_pos.x = cursor_pos.x;
+    last_cursor_pos.y = cursor_pos.y;
     let rect = canvas.getBoundingClientRect();
     cursor_pos.x = Math.floor((e.clientX - rect.left) / TILE_SIZE);
     cursor_pos.y = Math.floor((e.clientY - rect.top) / TILE_SIZE);
 }
 
+function new_tile_hovered() {
+    return cursor_pos.x !== last_cursor_pos.y && cursor_pos.y !== last_cursor_pos.y;
+}
+
 function move_mouse(e) {
     set_cursor_pos(e);
-    render();
+    if (new_tile_hovered()) {
+        render();
+    }
 }
 
 function toggle_tile(e) {
