@@ -85,7 +85,7 @@ function set_cursor_pos(e) {
 }
 
 function new_tile_hovered() {
-    return cursor_pos.x !== last_cursor_pos.y && cursor_pos.y !== last_cursor_pos.y;
+    return cursor_pos.x !== last_cursor_pos.x || cursor_pos.y !== last_cursor_pos.y;
 }
 
 function move_mouse(e) {
