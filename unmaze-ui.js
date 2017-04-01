@@ -25,6 +25,8 @@ let ui_maze, ui_mode, ui_maze_solver;
 let cursor_pos = {x: null, y: null};
 let last_cursor_pos = {x: null, y: null};
 
+let hold_state = null;
+
 let canvas = document.getElementById("unmaze-canvas");
 
 let ctx = canvas.getContext("2d");
@@ -88,21 +90,39 @@ function new_tile_hovered() {
     return cursor_pos.x !== last_cursor_pos.x || cursor_pos.y !== last_cursor_pos.y;
 }
 
+function should_update_tile() {
+    return hold_state !== null &&
+        [MAZE.FREE, MAZE.WALL].indexOf(ui_maze.maze[cursor_pos.x][cursor_pos.y]) > -1 &&
+        ui_maze.maze[cursor_pos.x][cursor_pos.y] !== hold_state;
+}
+
 function move_mouse(e) {
     set_cursor_pos(e);
     if (new_tile_hovered()) {
+        change_tile();
         render();
     }
 }
 
-function toggle_tile(e) {
+function change_tile() {
+    if (should_update_tile()) {
+            ui_maze.maze[cursor_pos.x][cursor_pos.y] = hold_state;
+    }
+}
+
+function hold_on(e) {
     set_cursor_pos(e);
     if (ui_maze.maze[cursor_pos.x][cursor_pos.y] === MAZE.FREE) {
-        ui_maze.maze[cursor_pos.x][cursor_pos.y] = MAZE.WALL;
-    } else if (ui_maze.maze[cursor_pos.x][cursor_pos.y] === MAZE.WALL) {
-        ui_maze.maze[cursor_pos.x][cursor_pos.y] = MAZE.FREE;
+        hold_state = MAZE.WALL;
+    } else {
+        hold_state = MAZE.FREE;
     }
+    change_tile();
     render();
+}
+
+function hold_off(e) {
+    hold_state = null;
 }
 
 function no_cursor() {
@@ -116,7 +136,8 @@ function editing_mode() {
         buttons[i].disabled = false;
     }
     canvas.addEventListener("mousemove", move_mouse);
-    canvas.addEventListener("click", toggle_tile);
+    canvas.addEventListener("mousedown", hold_on);
+    canvas.addEventListener("mouseup", hold_off);
     canvas.addEventListener("mouseout", no_cursor);
 }
 
@@ -126,7 +147,8 @@ function watching_mode() {
         buttons[i].disabled = true;
     }
     canvas.removeEventListener("mousemove", move_mouse);
-    canvas.removeEventListener("click", toggle_tile);
+    canvas.removeEventListener("mousedown", hold_on);
+    canvas.removeEventListener("mouseup", hold_off);
     canvas.removeEventListener("mouseout", no_cursor);
 }
 
