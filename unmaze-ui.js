@@ -42,6 +42,18 @@ let full_reset_button = document.getElementById("full-reset-button");
 
 let buttons = [solve_animate_button, quick_solve_button, step_button, robot_reset_button, save_button, load_button, full_reset_button];
 
+let speed_slider = document.getElementById("speed-slider");
+
+let wait_time = 100;
+
+const SPEED2WAITTIME = [
+    17,
+    50,
+    100,
+    500,
+    1000
+];
+
 const MAZE_WIDTH = canvas.width / TILE_SIZE;
 
 const MAZE_HEIGHT = canvas.height / TILE_SIZE;
@@ -190,7 +202,7 @@ function ui_step() {
 function solve_animate_continue() {
     if (!ui_maze_solver.done()) {
         ui_step();
-        setTimeout(solve_animate_continue, 100);
+        setTimeout(solve_animate_continue, wait_time);
     } else {
         editing_mode();
     }
@@ -222,6 +234,11 @@ function load_from_url() {
     render();
 }
 
+function update_speed() {
+    wait_time = SPEED2WAITTIME[parseInt(speed_slider.value)];
+    console.log(wait_time);
+}
+
 full_reset_button.addEventListener("click", full_reset);
 robot_reset_button.addEventListener("click", robot_reset);
 step_button.addEventListener("click", ui_step);
@@ -229,6 +246,8 @@ solve_animate_button.addEventListener("click", solve_animate);
 quick_solve_button.addEventListener("click", quick_solve);
 save_button.addEventListener("click", save_to_url);
 load_button.addEventListener("click", load_from_url);
+
+speed_slider.addEventListener("input", update_speed);
 
 maze_setup();
 editing_mode();
