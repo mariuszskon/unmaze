@@ -47,11 +47,11 @@ let speed_slider = document.getElementById("speed-slider");
 let wait_time = 100;
 
 const SPEED2WAITTIME = [
-    17,
-    50,
-    100,
+    1000,
     500,
-    1000
+    100,
+    50,
+    17
 ];
 
 const MAZE_WIDTH = canvas.width / TILE_SIZE;
