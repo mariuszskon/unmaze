@@ -89,7 +89,7 @@ class MazeSolver {
         this.maze = maze;
         this.status = SOLVE_STATUS.EXPLORING;
         this.junction_memory = [];
-        this.last_pos = {};
+        this.last_pos = {x: this.maze.robot.x, y: this.maze.robot.y};
     }
 
     adjacent() {
