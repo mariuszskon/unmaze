@@ -220,7 +220,7 @@ class MazeSolver {
         }
     }
 
-    goBack(adjacent) {
+    goBack() {
         if (this.maze.robot.x === this.maze.start.x && this.maze.robot.y === this.maze.start.y) {
             this.status = SOLVE_STATUS.FAILED;
         } else {
@@ -245,7 +245,7 @@ class MazeSolver {
             }
             if (direction === null) {
                 // we have been everywhere possible from this junction
-                this.goBack(adjacent);
+                this.goBack();
             } else {
                 junction_paths.push(direction);
                 this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.TRAIL;
@@ -253,7 +253,7 @@ class MazeSolver {
                 this.move(direction);
             }
         } else {
-            this.goBack(adjacent);
+            this.goBack();
         }
     }
 
