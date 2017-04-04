@@ -202,15 +202,12 @@ class MazeSolver {
                 this.move(direction);
             } else {
                 // we already handled this junction before
-                this.move(INVERT_DIRECTION[this.move_memory.pop()], false);
-                this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.FREE;
+                this.goBack();
                 this.status = SOLVE_STATUS.RETRACING;
             }
         } else if (this.isDeadEnd(possibilities)) {
             // move back to last position and THEN retrace: handles loops correctly
-            this.move(INVERT_DIRECTION[this.move_memory.pop()], false);
-            // remove trail
-            this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.FREE;
+            this.goBack();
             this.status = SOLVE_STATUS.RETRACING;
         } else {
             // move to the next available space
