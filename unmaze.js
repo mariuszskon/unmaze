@@ -84,11 +84,18 @@ const SOLVE_STATUS = {
     RETRACING: 3
 };
 
+const DIRECTION = {
+    UP: 0,
+    RIGHT: 1,
+    DOWN: 2,
+    LEFT: 3
+};
+
 const SOLVE_INVERT_DIRECTION = {
-    up: "down",
-    right: "left",
-    down: "up",
-    left: "right"
+    [DIRECTION.UP]: DIRECTION.DOWN,
+    [DIRECTION.RIGHT]: DIRECTION.LEFT,
+    [DIRECTION.DOWN]: DIRECTION.UP,
+    [DIRECTION.LEFT]: DIRECTION.RIGHT
 };
 
 class MazeSolver {
@@ -127,7 +134,12 @@ class MazeSolver {
             left = this.maze.maze[this.maze.robot.x - 1][this.maze.robot.y];
         }
 
-        return {up, right, down, left};
+        return {
+            [DIRECTION.UP]: up,
+            [DIRECTION.RIGHT]: right,
+            [DIRECTION.DOWN]: down,
+            [DIRECTION.LEFT]: left
+        };
     }
 
     isSolved() {
@@ -142,7 +154,7 @@ class MazeSolver {
         let possibilities = [];
         for (let key in adjacent) {
             if (adjacent[key] === MAZE.FREE || adjacent[key] === MAZE.END) {
-                possibilities.push(key);
+                possibilities.push(parseInt(key));
             }
         }
         return possibilities;
@@ -167,13 +179,13 @@ class MazeSolver {
     move(direction) {
         this.last_pos = {x: this.maze.robot.x, y: this.maze.robot.y};
         this.last_direction = direction;
-        if (direction === "up") {
+        if (direction === DIRECTION.UP) {
             this.maze.robot.y -= 1;
-        } else if (direction === "right") {
+        } else if (direction === DIRECTION.RIGHT) {
             this.maze.robot.x += 1;
-        } else if (direction === "down") {
+        } else if (direction === DIRECTION.DOWN) {
             this.maze.robot.y += 1;
-        } else if (direction === "left") {
+        } else if (direction === DIRECTION.LEFT) {
             this.maze.robot.x -= 1;
         }
     }
@@ -208,7 +220,7 @@ class MazeSolver {
             let direction = null;
             for (let key in adjacent) {
                 if (adjacent[key] === MAZE.TRAIL) {
-                    direction = key;
+                    direction = parseInt(key);
                 }
             }
             this.move(direction);
