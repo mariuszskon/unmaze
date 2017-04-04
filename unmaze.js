@@ -194,7 +194,7 @@ class MazeSolver {
         if (this.isJunction(possibilities)) {
             // new junction!
             let direction = possibilities[0];
-            this.junction_memory[String([this.maze.robot.x, this.maze.robot.y])] = [direction];
+            this.junction_memory[[this.maze.robot.x, this.maze.robot.y].toString()] = [direction];
             // set down trail to avoid considering this a new junction if there is a loop
             this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.TRAIL;
             this.move(direction);
@@ -232,7 +232,7 @@ class MazeSolver {
     retrace(adjacent, possibilities) {
         if (this.isJunction(possibilities)) {
             // choose a direction we have not been in before, or continue retracing if there is none
-            let junction_paths = this.junction_memory[String([this.maze.robot.x, this.maze.robot.y])];
+            let junction_paths = this.junction_memory[[this.maze.robot.x, this.maze.robot.y].toString()];
             let direction = null;
             for (let possibility of possibilities) {
                 // possibility that we have not been to before
