@@ -91,7 +91,7 @@ const DIRECTION = {
     LEFT: 3
 };
 
-const SOLVE_INVERT_DIRECTION = {
+const INVERT_DIRECTION = {
     [DIRECTION.UP]: DIRECTION.DOWN,
     [DIRECTION.RIGHT]: DIRECTION.LEFT,
     [DIRECTION.DOWN]: DIRECTION.UP,
@@ -103,7 +103,7 @@ class MazeSolver {
         this.maze = maze;
         this.status = SOLVE_STATUS.EXPLORING;
         this.junction_memory = {};
-        this.last_pos = {x: this.maze.robot.x, y: this.maze.robot.y};
+        this.move_memory = [];
         this.last_direction = null;
     }
 
@@ -176,8 +176,8 @@ class MazeSolver {
         }
     }
 
-    move(direction) {
-        this.last_pos = {x: this.maze.robot.x, y: this.maze.robot.y};
+    move(direction, log=true) {
+        if (log) this.move_memory.push(direction);
         this.last_direction = direction;
         if (direction === DIRECTION.UP) {
             this.maze.robot.y -= 1;
@@ -200,8 +200,7 @@ class MazeSolver {
             this.move(direction);
         } else if (this.isDeadEnd(possibilities)) {
             // move back to last position and THEN retrace: handles loops correctly
-            this.maze.robot.x = this.last_pos.x;
-            this.maze.robot.y = this.last_pos.y;
+            this.move(INVERT_DIRECTION[this.move_memory.pop()], false);
             // remove trail
             this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.FREE;
             this.status = SOLVE_STATUS.RETRACING;
@@ -217,13 +216,8 @@ class MazeSolver {
         if (this.maze.robot.x === this.maze.start.x && this.maze.robot.y === this.maze.start.y) {
             this.status = SOLVE_STATUS.FAILED;
         } else {
-            let direction = null;
-            for (let key in adjacent) {
-                if (adjacent[key] === MAZE.TRAIL) {
-                    direction = parseInt(key);
-                }
-            }
-            this.move(direction);
+            let direction = INVERT_DIRECTION[this.move_memory.pop()];
+            this.move(direction, false);
             // remove trail
             this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.FREE;
         }
