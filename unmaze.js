@@ -193,12 +193,19 @@ class MazeSolver {
 
     explore(possibilities) {
         if (this.isJunction(possibilities)) {
-            // new junction!
-            let direction = possibilities[0];
-            this.junction_memory[[this.maze.robot.x, this.maze.robot.y].toString()] = [direction];
-            // set down trail to avoid considering this a new junction if there is a loop
-            this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.TRAIL;
-            this.move(direction);
+            if (this.junction_memory[[this.maze.robot.x, this.maze.robot.y].toString()] === undefined) {
+                // new junction!
+                let direction = possibilities[0];
+                this.junction_memory[[this.maze.robot.x, this.maze.robot.y].toString()] = [direction];
+                // set down trail to avoid considering this a new junction if there is a loop
+                this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.TRAIL;
+                this.move(direction);
+            } else {
+                // we already handled this junction before
+                this.move(INVERT_DIRECTION[this.move_memory.pop()], false);
+                this.maze.maze[this.maze.robot.x][this.maze.robot.y] = MAZE.FREE;
+                this.status = SOLVE_STATUS.RETRACING;
+            }
         } else if (this.isDeadEnd(possibilities)) {
             // move back to last position and THEN retrace: handles loops correctly
             this.move(INVERT_DIRECTION[this.move_memory.pop()], false);
