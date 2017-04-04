@@ -105,6 +105,7 @@ class MazeSolver {
         this.junction_memory = {};
         this.move_memory = [];
         this.last_direction = null;
+        this.steps = 0;
     }
 
     adjacent() {
@@ -276,6 +277,7 @@ class MazeSolver {
     step() {
         if (!this.done()) {
             this.ai();
+            this.steps += 1;
         }
 
         return this.status;
