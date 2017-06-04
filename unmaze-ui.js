@@ -3,7 +3,7 @@
    Licensed under the MIT license
 */
 
-const TILE_SIZE = 20;
+let tile_size = 20;
 
 const UI_MODE = {
     WATCHING: 0,
@@ -38,11 +38,16 @@ let step_button = document.getElementById("step-button");
 let robot_reset_button = document.getElementById("robot-reset-button");
 let save_button = document.getElementById("save-button");
 let load_button = document.getElementById("load-button");
+let resetup_canvas_button = document.getElementById("resetup-canvas");
 let full_reset_button = document.getElementById("full-reset-button");
 
 let buttons = [solve_animate_button, quick_solve_button, step_button, robot_reset_button, save_button, load_button, full_reset_button];
 
 let speed_slider = document.getElementById("speed-slider");
+
+let maze_width_input = document.getElementById("maze-width");
+let maze_height_input = document.getElementById("maze-height");
+let tile_size_input = document.getElementById("tile-size");
 
 let wait_time = 100;
 
@@ -54,19 +59,24 @@ const SPEED2WAITTIME = [
     17
 ];
 
-const MAZE_WIDTH = canvas.width / TILE_SIZE;
+let maze_width = 25;
 
-const MAZE_HEIGHT = canvas.height / TILE_SIZE;
+let maze_height = 25;
+
+function canvas_setup() {
+    canvas.width = maze_width * tile_size;
+    canvas.height = maze_height * tile_size;
+}
 
 function solver_setup() {
     ui_maze_solver = new MazeSolver(ui_maze);
 }
 
 function maze_setup() {
-    ui_maze = new Maze(MAZE_WIDTH, MAZE_HEIGHT);
+    ui_maze = new Maze(maze_width, maze_height);
 
     ui_maze.setStart(0, 0);
-    ui_maze.setEnd(MAZE_WIDTH - 1, MAZE_HEIGHT - 1);
+    ui_maze.setEnd(maze_width - 1, maze_height - 1);
     ui_maze.robotToStart();
 
     solver_setup();
@@ -74,19 +84,19 @@ function maze_setup() {
 
 function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i = 0; i < MAZE_WIDTH; i++) {
-        for (let j = 0; j < MAZE_HEIGHT; j++) {
+    for (let i = 0; i < maze_width; i++) {
+        for (let j = 0; j < maze_height; j++) {
             ctx.fillStyle = TYPE2COLOR[ui_maze.maze[i][j]];
-            ctx.fillRect(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            ctx.fillRect(i * tile_size, j * tile_size, tile_size, tile_size);
         }
     }
 
     ctx.fillStyle = ROBOT_COLOR;
-    ctx.fillRect(ui_maze.robot.x * TILE_SIZE, ui_maze.robot.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    ctx.fillRect(ui_maze.robot.x * tile_size, ui_maze.robot.y * tile_size, tile_size, tile_size);
 
     if (cursor_pos.x !== null && cursor_pos.y !== null) {
         ctx.strokeStyle = CURSOR_COLOR;
-        ctx.strokeRect(cursor_pos.x * TILE_SIZE, cursor_pos.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        ctx.strokeRect(cursor_pos.x * tile_size, cursor_pos.y * tile_size, tile_size, tile_size);
     }
 }
 
@@ -94,8 +104,8 @@ function set_cursor_pos(e) {
     last_cursor_pos.x = cursor_pos.x;
     last_cursor_pos.y = cursor_pos.y;
     let rect = canvas.getBoundingClientRect();
-    cursor_pos.x = Math.floor((e.clientX - rect.left) / TILE_SIZE);
-    cursor_pos.y = Math.floor((e.clientY - rect.top) / TILE_SIZE);
+    cursor_pos.x = Math.floor((e.clientX - rect.left) / tile_size);
+    cursor_pos.y = Math.floor((e.clientY - rect.top) / tile_size);
 }
 
 function new_tile_hovered() {
@@ -181,8 +191,13 @@ function ui_status_update(status) {
 }
 
 function full_reset() {
-    ui_status_update(null);
+    maze_width = parseInt(maze_width_input.value);
+    maze_height = parseInt(maze_height_input.value);
+    tile_size = parseInt(tile_size_input.value);
+    canvas_setup();
     maze_setup();
+    editing_mode();
+    ui_status_update(null);
     render();
 }
 
@@ -234,6 +249,12 @@ function load_from_url() {
     render();
 }
 
+function resetup_canvas() {
+    tile_size = parseInt(tile_size_input.value);
+    canvas_setup();
+    render();
+}
+
 function update_speed() {
     wait_time = SPEED2WAITTIME[parseInt(speed_slider.value)];
     console.log(wait_time);
@@ -246,10 +267,8 @@ solve_animate_button.addEventListener("click", solve_animate);
 quick_solve_button.addEventListener("click", quick_solve);
 save_button.addEventListener("click", save_to_url);
 load_button.addEventListener("click", load_from_url);
+resetup_canvas_button.addEventListener("click", resetup_canvas);
 
 speed_slider.addEventListener("input", update_speed);
 
-maze_setup();
-editing_mode();
-render();
-
+full_reset();
