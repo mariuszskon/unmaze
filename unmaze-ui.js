@@ -190,10 +190,14 @@ function ui_status_update(status) {
     }
 }
 
-function full_reset() {
+function update_dimensions() {
     maze_width = parseInt(maze_width_input.value);
     maze_height = parseInt(maze_height_input.value);
     tile_size = parseInt(tile_size_input.value);
+}
+
+function full_reset() {
+    update_dimensions();
     canvas_setup();
     maze_setup();
     editing_mode();
@@ -246,6 +250,10 @@ function save_to_url() {
 function load_from_url() {
     robot_reset();
     ui_maze.load(window.location.hash.slice(1));
+    maze_width_input.value = ui_maze.maze.length;
+    maze_height_input.value = ui_maze.maze[0].length;
+    update_dimensions();
+    canvas_setup();
     render();
 }
 
