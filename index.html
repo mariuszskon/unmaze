@@ -67,30 +67,33 @@
 
     <body>
         <h1>unmaze</h1>
-        <p>Black tiles are walls, white are paths/tunnels. <span style="color:red">Red</span> is the "robot" which solves the maze and leaves an <span style="color:orange">orange</span> trail. The <span style="color:green">green</span> is the end or target point - where the robot attempts to get to.</p>
-        <button id="solve-animate" type="button">Solve!</button>
-        <button id="quick-solve" type="button">Quick solve!</button>
-        <button id="step-button" type="button">Single step</button>
+        <div id="control-panel">
+            <p>Black tiles are walls, white are paths/tunnels. <span style="color:red">Red</span> is the "robot" which solves the maze and leaves an <span style="color:orange">orange</span> trail. The <span style="color:green">green</span> is the end or target point - where the robot attempts to get to.</p>
+            <button id="solve-animate" type="button">Solve!</button>
+            <button id="quick-solve" type="button">Quick solve!</button>
+            <button id="step-button" type="button">Single step</button>
+            <br><br>
+            <button id="robot-reset-button" type="button">Robot reset</button>
+            <button id="save-button" type="button">Save to URL</button>
+            <button id="load-button" type="button">Load from URL</button>
+            <br>
+            <p>Speed: <input id="speed-slider" type="range" value="2" min="0" max="4"></p>
+
+            <p>
+                Tile size: <input id="tile-size" type="number" min="1" value="20">
+                <button id="resetup-canvas" type="button">Update size</button>
+            </p>
+
+            <p>
+                Width: <input id="maze-width" type="number" min="2" value="25">
+                Height: <input id="maze-height" type="number" min="2" value="25">
+                <button id="full-reset-button" type="button" class="btn-danger">Full reset</button>
+            </p>
+
+            <p>Status: <span id="status-span">None</span></p>
+        </div>
+        <button id="toggle-control-panel" type="button">Toggle control panel</button>
         <br><br>
-        <button id="robot-reset-button" type="button">Robot reset</button>
-        <button id="save-button" type="button">Save to URL</button>
-        <button id="load-button" type="button">Load from URL</button>
-        <br>
-        <p>Speed: <input id="speed-slider" type="range" value="2" min="0" max="4"></p>
-
-        <p>
-            Tile size: <input id="tile-size" type="number" min="1" value="20">
-            <button id="resetup-canvas" type="button">Update size</button>
-        </p>
-
-        <p>
-            Width: <input id="maze-width" type="number" min="2" value="25">
-            Height: <input id="maze-height" type="number" min="2" value="25">
-            <button id="full-reset-button" type="button" class="btn-danger">Full reset</button>
-        </p>
-
-        <p>Status: <span id="status-span">None</span></p>
-
         <canvas id="unmaze-canvas"></canvas>
 
         <script src="unmaze.js"></script>

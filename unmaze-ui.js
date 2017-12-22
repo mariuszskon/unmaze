@@ -31,6 +31,8 @@ let canvas = document.getElementById("unmaze-canvas");
 
 let ctx = canvas.getContext("2d");
 
+let control_panel = document.getElementById("control-panel");
+
 let status_span = document.getElementById("status-span");
 let solve_animate_button = document.getElementById("solve-animate");
 let quick_solve_button = document.getElementById("quick-solve");
@@ -40,6 +42,7 @@ let save_button = document.getElementById("save-button");
 let load_button = document.getElementById("load-button");
 let resetup_canvas_button = document.getElementById("resetup-canvas");
 let full_reset_button = document.getElementById("full-reset-button");
+let toggle_control_panel_button = document.getElementById("toggle-control-panel");
 
 let buttons_to_disable = [solve_animate_button, quick_solve_button, step_button, robot_reset_button, save_button, load_button, full_reset_button];
 
@@ -268,6 +271,14 @@ function update_speed() {
     console.log(wait_time);
 }
 
+function toggle_control_panel() {
+    if (control_panel.style.display === "none") {
+        control_panel.style.display = "inline";
+    } else {
+        control_panel.style.display = "none";
+    }
+}
+
 full_reset_button.addEventListener("click", full_reset);
 robot_reset_button.addEventListener("click", robot_reset);
 step_button.addEventListener("click", ui_step);
@@ -276,6 +287,7 @@ quick_solve_button.addEventListener("click", quick_solve);
 save_button.addEventListener("click", save_to_url);
 load_button.addEventListener("click", load_from_url);
 resetup_canvas_button.addEventListener("click", resetup_canvas);
+toggle_control_panel_button.addEventListener("click", toggle_control_panel);
 
 speed_slider.addEventListener("input", update_speed);
 
