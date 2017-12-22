@@ -41,7 +41,7 @@ let load_button = document.getElementById("load-button");
 let resetup_canvas_button = document.getElementById("resetup-canvas");
 let full_reset_button = document.getElementById("full-reset-button");
 
-let buttons = [solve_animate_button, quick_solve_button, step_button, robot_reset_button, save_button, load_button, full_reset_button];
+let buttons_to_disable = [solve_animate_button, quick_solve_button, step_button, robot_reset_button, save_button, load_button, full_reset_button];
 
 let speed_slider = document.getElementById("speed-slider");
 
@@ -154,8 +154,8 @@ function no_cursor() {
 
 function editing_mode() {
     ui_mode = UI_MODE.EDITING;
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].disabled = false;
+    for (let i = 0; i < buttons_to_disable.length; i++) {
+        buttons_to_disable[i].disabled = false;
     }
     canvas.addEventListener("mousemove", move_mouse);
     canvas.addEventListener("mousedown", hold_on);
@@ -165,8 +165,8 @@ function editing_mode() {
 
 function watching_mode() {
     ui_mode = UI_MODE.WATCHING;
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].disabled = true;
+    for (let i = 0; i < buttons_to_disable.length; i++) {
+        buttons_to_disable[i].disabled = true;
     }
     canvas.removeEventListener("mousemove", move_mouse);
     canvas.removeEventListener("mousedown", hold_on);
